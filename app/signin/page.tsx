@@ -19,11 +19,12 @@ export default function SignInPage() {
           <div>
             <Link href="/" className="flex items-center gap-2">
               <Image
-                src={`${process.env.NEXT_PUBLIC_BLOB_URL}/J8P06.png`}
                 alt="Logo"
-                width={32}
-                height={32}
-                className="h-8 w-8"
+                className="mx-auto h-10 w-auto"
+                height={40}
+                width={40}
+                src="/images/logo.png"
+                priority
               />
               <span className="font-medium text-xl">PetCare</span>
             </Link>
@@ -91,11 +92,12 @@ export default function SignInPage() {
           <div className="lg:hidden space-y-4 text-center mb-8">
             <Link href="/" className="inline-flex items-center gap-2 mb-8">
               <Image
-                src={`${process.env.NEXT_PUBLIC_BLOB_URL}/J8P06.png`}
                 alt="Logo"
-                width={32}
-                height={32}
-                className="h-8 w-8"
+                className="mx-auto h-10 w-auto"
+                height={40}
+                width={40}
+                src="/images/logo.png"
+                priority
               />
               <span className="font-medium text-xl">PetCare</span>
             </Link>

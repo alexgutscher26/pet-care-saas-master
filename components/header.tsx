@@ -23,11 +23,12 @@ export function Header() {
       <div className="container flex h-16 items-center justify-between">
         <Link href="/" className="flex items-center gap-2">
           <Image
-            src={`${process.env.NEXT_PUBLIC_BLOB_URL}/J8P06.png`}
             alt="Logo"
-            width={32}
-            height={32}
             className="h-8 w-8"
+            height={32}
+            width={32}
+            src="/images/logo.png"
+            priority
           />
           <span className="font-medium">PetCare</span>
         </Link>

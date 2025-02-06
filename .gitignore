@@ -1,27 +1,122 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
-# dependencies
+# Dependencies
 /node_modules
+/.pnp
+.pnp.js
+.pnpm-store/
 
-# next.js
+# Testing
+/coverage
+/.nyc_output
+/cypress/videos/
+/cypress/screenshots/
+/playwright-report/
+/test-results/
+
+# Next.js
 /.next/
 /out/
+.next-env.local
 
-# production
+# Production
 /build
+/dist
+/.swc/
 
-# debug
+# Debug
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
+debug.log
 
-# env files
-.env*
+# Local env files
+.env
+.env*.local
+.env.development
+.env.test
+.env.production
 
-# vercel
+# Vercel
 .vercel
+.now
 
-# typescript
+# Turborepo
+.turbo
+
+# TypeScript
 *.tsbuildinfo
 next-env.d.ts
+
+# IDE - VSCode
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+# IDE - JetBrains
+.idea/
+*.iml
+*.iws
+.idea_modules/
+
+# IDE - WebStorm
+.webstorm/
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# Linux
+*~
+.fuse_hidden*
+.directory
+.Trash-*
+
+# Logs
+logs
+*.log
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# Cache directories
+.cache/
+.eslintcache
+.stylelintcache
+.prettiercache
+.npm
+
+# Optional REPL history
+.node_repl_history
+
+# Output of 'npm pack'
+*.tgz
+
+# Yarn Integrity file
+.yarn-integrity
+
+# Supabase
+.branches
+.temp
+.supabase
+
+# Misc
+*.pem
+.env.local.example
+*.bak
+*.swp
+*.swo

@@ -1,14 +1,90 @@
 {
   "scanSettings": {
-    "baseBranches": []
+    "baseBranches": ["main", "develop"],
+    "configMode": "AUTO",
+    "enableLicenseViolations": true,
+    "enableReachability": true,
+    "enableSAST": true,
+    "enableSCA": true,
+    "enableSecrets": true,
+    "enableIaC": true,
+    "enableContainers": true,
+    "configExpirationDays": 7,
+    "scanPullRequests": true,
+    "prScanSettings": {
+      "incrementalScan": true,
+      "baseBranchScan": true
+    }
   },
   "checkRunSettings": {
     "vulnerableCheckRunConclusionLevel": "failure",
     "displayMode": "diff",
-    "useMendCheckNames": true
+    "useMendCheckNames": true,
+    "strictMode": "warning",
+    "showWsInfo": true,
+    "vulnerabilityThreshold": {
+      "critical": 0,
+      "high": 0,
+      "medium": 2,
+      "low": 5
+    }
   },
   "issueSettings": {
     "minSeverityLevel": "LOW",
-    "issueType": "DEPENDENCY"
+    "issueType": "DEPENDENCY",
+    "severityOverride": {
+      "NONE": "LOW",
+      "LOW": "LOW",
+      "MEDIUM": "MEDIUM",
+      "HIGH": "HIGH",
+      "CRITICAL": "CRITICAL"
+    },
+    "customLabels": ["security", "dependencies"],
+    "assignees": ["@security-team"],
+    "issueLabels": {
+      "vulnType": true,
+      "severity": true,
+      "status": true
+    }
+  },
+  "remediateSettings": {
+    "enableRenovate": true,
+    "extends": [
+      "config:base",
+      ":preserveSemverRanges",
+      ":automergePatch",
+      ":automergeMinor",
+      ":automergeLinters",
+      ":automergeTesters",
+      ":automergeTypes"
+    ],
+    "packageRules": [
+      {
+        "matchUpdateTypes": ["patch"],
+        "automerge": true
+      },
+      {
+        "matchDepTypes": ["devDependencies"],
+        "automerge": true
+      }
+    ],
+    "vulnerabilityAlerts": {
+      "enabled": true,
+      "labels": ["security"]
+    },
+    "transitiveRemediation": true
+  },
+  "policySettings": {
+    "failOnViolations": true,
+    "failOnSeverity": "HIGH",
+    "requireLicenseCompliance": true,
+    "licenseViolationLevel": "WARNING",
+    "allowedLicenses": [
+      "MIT",
+      "Apache-2.0",
+      "BSD-3-Clause",
+      "BSD-2-Clause",
+      "ISC"
+    ]
   }
 }

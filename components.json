@@ -6,16 +6,78 @@
   "tailwind": {
     "config": "tailwind.config.ts",
     "css": "app/globals.css",
-    "baseColor": "neutral",
+    "baseColor": "slate",
     "cssVariables": true,
-    "prefix": ""
+    "prefix": "",
+    "darkMode": "class",
+    "animations": true,
+    "spacing": {
+      "unit": 4,
+      "scale": 1
+    }
   },
   "aliases": {
     "components": "@/components",
-    "utils": "@/lib/utils",
     "ui": "@/components/ui",
+    "layouts": "@/components/layouts",
+    "features": "@/components/features",
+    "forms": "@/components/forms",
+    "modals": "@/components/modals",
+    "utils": "@/lib/utils",
     "lib": "@/lib",
-    "hooks": "@/hooks"
+    "hooks": "@/hooks",
+    "types": "@/types",
+    "config": "@/config",
+    "styles": "@/styles",
+    "store": "@/store",
+    "api": "@/app/api",
+    "constants": "@/lib/constants",
+    "services": "@/lib/services",
+    "providers": "@/providers",
+    "context": "@/context"
   },
-  "iconLibrary": "lucide"
+  "iconLibrary": "lucide",
+  "themes": {
+    "light": {
+      "primary": "slate",
+      "secondary": "zinc",
+      "accent": "indigo",
+      "neutral": "gray",
+      "success": "green",
+      "warning": "yellow",
+      "error": "red",
+      "info": "blue"
+    },
+    "dark": {
+      "primary": "slate",
+      "secondary": "zinc",
+      "accent": "indigo",
+      "neutral": "gray",
+      "success": "green",
+      "warning": "yellow",
+      "error": "red",
+      "info": "blue"
+    }
+  },
+  "components": {
+    "button": {
+      "defaultVariants": {
+        "size": "default",
+        "variant": "default"
+      },
+      "slots": ["root", "icon"]
+    },
+    "input": {
+      "defaultVariants": {
+        "size": "default",
+        "variant": "default"
+      }
+    },
+    "card": {
+      "slots": ["root", "header", "title", "description", "content", "footer"]
+    },
+    "dialog": {
+      "slots": ["trigger", "content", "header", "footer", "title", "description"]
+    }
+  }
 }

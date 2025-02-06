@@ -38,16 +38,15 @@ export const metadata: Metadata = {
     images: ['/twitter-image.jpg'],
     creator: '@petcare'
   },
-  viewport: {
-    width: 'device-width',
-    initialScale: 1,
-    maximumScale: 1,
-  },
-  verification: {
-    google: 'your-google-site-verification',
-  },
   category: 'Pet Management'
 }
+
+export const viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
+};
 
 import ClientLayout from '@/components/client-layout'
 
