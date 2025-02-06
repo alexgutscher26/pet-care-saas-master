@@ -108,15 +108,39 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   const signUp = useCallback(async (email: string, password: string) => {
-    const { error } = await supabase.auth.signUp({
+    const { error, data } = await supabase.auth.signUp({
       email,
       password,
+      options: {
+        emailRedirectTo: `${window.location.origin}/auth/callback`,
+        data: {
+          name: email.split('@')[0], // Default name from email
+        }
+      }
     });
 
     if (error) {
       throw error;
     }
-  }, []);
+
+    // Check if user was created in auth.users
+    if (data.user) {
+      // Wait a bit for the trigger to complete
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      
+      // Verify user was created in public.users
+      const { data: userData, error: userError } = await supabase
+        .from('users')
+        .select('*')
+        .eq('id', data.user.id)
+        .single();
+
+      if (userError || !userData) {
+        console.error('User creation in public.users failed:', userError);
+        throw new Error('Failed to create user profile');
+      }
+    }
+  }, [supabase.auth]);
 
   const signOut = useCallback(async () => {
     const { error } = await supabase.auth.signOut();

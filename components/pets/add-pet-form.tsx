@@ -6,6 +6,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 import { toast } from 'sonner';
+import { useQueryClient } from '@tanstack/react-query';
 
 import { Button } from '@/components/ui/button';
 import {
@@ -18,16 +19,13 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 const formSchema = z.object({
   name: z.string().min(1, 'Name is required'),
-  breed: z.string().min(1, 'Breed is required'),
-  age: z.coerce.number().min(0, 'Age must be a positive number'),
-  weight: z.coerce.number().min(0, 'Weight must be a positive number'),
-  photoUrl: z.string().url().optional().or(z.literal('')),
-  description: z.string().optional(),
+  type: z.string().min(1, 'Type is required'),
+  breed: z.string().optional(),
+  birthDate: z.string().optional(),
 });
 
 type FormValues = z.infer<typeof formSchema>;
@@ -35,16 +33,15 @@ type FormValues = z.infer<typeof formSchema>;
 export function AddPetForm() {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
+  const queryClient = useQueryClient();
 
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       name: '',
+      type: '',
       breed: '',
-      age: 0,
-      weight: 0,
-      photoUrl: '',
-      description: '',
+      birthDate: '',
     },
   });
 
@@ -56,18 +53,30 @@ export function AddPetForm() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(data),
+        body: JSON.stringify({
+          name: data.name,
+          type: data.type,
+          breed: data.breed || null,
+          birthDate: data.birthDate || null,
+        }),
       });
 
       if (!response.ok) {
-        throw new Error('Failed to add pet');
+        const errorText = await response.text();
+        throw new Error(errorText || 'Failed to add pet');
       }
 
+      const newPet = await response.json();
+      
+      // Invalidate and refetch pets query
+      await queryClient.invalidateQueries({ queryKey: ['pets'] });
+      
       toast.success('Pet added successfully!');
+      router.push('/pets'); // Redirect to pets list
       router.refresh();
-      form.reset();
     } catch (error) {
-      toast.error('Something went wrong. Please try again.');
+      console.error('Error adding pet:', error);
+      toast.error(error instanceof Error ? error.message : 'Something went wrong. Please try again.');
     } finally {
       setIsLoading(false);
     }
@@ -100,10 +109,27 @@ export function AddPetForm() {
             />
             <FormField
               control={form.control}
+              name="type"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Pet Type</FormLabel>
+                  <FormControl>
+                    <Input 
+                      placeholder="e.g., Dog, Cat, Bird" 
+                      {...field} 
+                      className="rounded-lg"
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
               name="breed"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Breed</FormLabel>
+                  <FormLabel>Breed (Optional)</FormLabel>
                   <FormControl>
                     <Input 
                       placeholder="Enter breed" 
@@ -115,54 +141,15 @@ export function AddPetForm() {
                 </FormItem>
               )}
             />
-            <div className="grid grid-cols-2 gap-4">
-              <FormField
-                control={form.control}
-                name="age"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Age</FormLabel>
-                    <FormControl>
-                      <Input
-                        type="number"
-                        placeholder="Enter age"
-                        {...field}
-                        className="rounded-lg"
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="weight"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Weight (kg)</FormLabel>
-                    <FormControl>
-                      <Input
-                        type="number"
-                        step="0.01"
-                        placeholder="Enter weight"
-                        {...field}
-                        className="rounded-lg"
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
             <FormField
               control={form.control}
-              name="photoUrl"
+              name="birthDate"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Photo URL</FormLabel>
+                  <FormLabel>Birth Date (Optional)</FormLabel>
                   <FormControl>
                     <Input 
-                      placeholder="Enter photo URL" 
+                      type="date" 
                       {...field} 
                       className="rounded-lg"
                     />
@@ -171,40 +158,9 @@ export function AddPetForm() {
                 </FormItem>
               )}
             />
-            <FormField
-              control={form.control}
-              name="description"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Description</FormLabel>
-                  <FormControl>
-                    <Textarea 
-                      placeholder="Enter description" 
-                      {...field}
-                      className="rounded-lg min-h-[100px]"
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <div className="flex justify-end gap-4">
-              <Button
-                type="button"
-                variant="outline"
-                onClick={() => router.push('/pets')}
-                className="rounded-lg"
-              >
-                Cancel
-              </Button>
-              <Button 
-                type="submit" 
-                disabled={isLoading}
-                className="rounded-lg"
-              >
-                {isLoading ? 'Adding...' : 'Add Pet'}
-              </Button>
-            </div>
+            <Button type="submit" className="w-full" disabled={isLoading}>
+              {isLoading ? 'Adding...' : 'Add Pet'}
+            </Button>
           </form>
         </Form>
       </CardContent>

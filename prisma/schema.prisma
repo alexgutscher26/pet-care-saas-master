@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -11,87 +8,87 @@ datasource db {
 }
 
 model User {
-  id            String    @id @default(uuid())
-  email         String    @unique
-  name          String?
-  createdAt     DateTime  @default(now()) @map("created_at")
-  updatedAt     DateTime  @updatedAt @map("updated_at")
-  pets          Pet[]
-  appointments  VetAppointment[]
+  id           String           @id @default(uuid())
+  email        String           @unique
+  name         String?
+  createdAt    DateTime         @default(now()) @map("created_at")
+  updatedAt    DateTime         @updatedAt @map("updated_at")
+  pets         Pet[]
+  appointments VetAppointment[]
 
   @@map("users")
 }
 
 model Pet {
-  id            String    @id @default(uuid())
+  id            String           @id @default(uuid())
   name          String
   type          String
   breed         String?
-  birthDate     DateTime? @map("birth_date")
-  userId        String    @map("user_id")
-  createdAt     DateTime  @default(now()) @map("created_at")
-  updatedAt     DateTime  @updatedAt @map("updated_at")
-  user          User      @relation(fields: [userId], references: [id])
+  birthDate     DateTime?        @map("birth_date")
+  userId        String           @map("user_id")
+  createdAt     DateTime         @default(now()) @map("created_at")
+  updatedAt     DateTime         @updatedAt @map("updated_at")
   healthRecords HealthRecord[]
-  appointments  VetAppointment[]
   changes       PetChange[]
+  user          User             @relation(fields: [userId], references: [id])
+  appointments  VetAppointment[]
 
   @@map("pets")
 }
 
 model HealthRecord {
-  id            String    @id @default(uuid())
-  petId         String    @map("pet_id")
-  type          String
-  date          DateTime
-  description   String
-  attachments   String[]
-  createdAt     DateTime  @default(now()) @map("created_at")
-  updatedAt     DateTime  @updatedAt @map("updated_at")
-  pet           Pet       @relation(fields: [petId], references: [id])
+  id          String   @id @default(uuid())
+  petId       String   @map("pet_id")
+  type        String
+  date        DateTime
+  description String
+  attachments String[]
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+  pet         Pet      @relation(fields: [petId], references: [id])
 
   @@map("health_records")
 }
 
 model Veterinarian {
-  id            String    @id @default(uuid())
-  name          String
-  speciality    String?
-  phone         String?
-  email         String    @unique
-  createdAt     DateTime  @default(now()) @map("created_at")
-  updatedAt     DateTime  @updatedAt @map("updated_at")
-  appointments  VetAppointment[]
+  id           String           @id @default(uuid())
+  name         String
+  speciality   String?
+  phone        String?
+  email        String           @unique
+  createdAt    DateTime         @default(now()) @map("created_at")
+  updatedAt    DateTime         @updatedAt @map("updated_at")
+  appointments VetAppointment[]
 
   @@map("veterinarians")
 }
 
 model VetAppointment {
-  id              String    @id @default(uuid())
-  petId           String    @map("pet_id")
-  userId          String    @map("user_id")
-  veterinarianId  String    @map("veterinarian_id")
-  date            DateTime
-  reason          String
-  notes           String?
-  status          String    @default("scheduled")
-  createdAt       DateTime  @default(now()) @map("created_at")
-  updatedAt       DateTime  @updatedAt @map("updated_at")
-  pet             Pet       @relation(fields: [petId], references: [id])
-  user            User      @relation(fields: [userId], references: [id])
-  veterinarian    Veterinarian @relation(fields: [veterinarianId], references: [id])
+  id             String       @id @default(uuid())
+  petId          String       @map("pet_id")
+  userId         String       @map("user_id")
+  veterinarianId String       @map("veterinarian_id")
+  date           DateTime
+  reason         String
+  notes          String?
+  status         String       @default("scheduled")
+  createdAt      DateTime     @default(now()) @map("created_at")
+  updatedAt      DateTime     @updatedAt @map("updated_at")
+  pet            Pet          @relation(fields: [petId], references: [id])
+  user           User         @relation(fields: [userId], references: [id])
+  veterinarian   Veterinarian @relation(fields: [veterinarianId], references: [id])
 
   @@map("vet_appointments")
 }
 
 model PetChange {
-  id            String    @id @default(uuid())
-  petId         String    @map("pet_id")
-  field         String
-  oldValue      String?
-  newValue      String
-  changedAt     DateTime  @default(now()) @map("changed_at")
-  pet           Pet       @relation(fields: [petId], references: [id])
+  id        String   @id @default(uuid())
+  petId     String   @map("pet_id")
+  field     String
+  oldValue  String?
+  newValue  String
+  changedAt DateTime @default(now()) @map("changed_at")
+  pet       Pet      @relation(fields: [petId], references: [id])
 
   @@map("pet_changes")
 }
