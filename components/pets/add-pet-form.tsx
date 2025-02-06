@@ -12,7 +12,6 @@ import { Button } from '@/components/ui/button';
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -72,8 +71,7 @@ export function AddPetForm() {
       await queryClient.invalidateQueries({ queryKey: ['pets'] });
       
       toast.success('Pet added successfully!');
-      router.push('/pets'); // Redirect to pets list
-      router.refresh();
+      router.push('/pets'); 
     } catch (error) {
       console.error('Error adding pet:', error);
       toast.error(error instanceof Error ? error.message : 'Something went wrong. Please try again.');
