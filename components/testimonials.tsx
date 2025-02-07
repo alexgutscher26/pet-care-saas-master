@@ -5,21 +5,21 @@ export function Testimonials() {
   return (
     <section className="py-20">
       <div className="container px-4 md:px-6">
-        <h2 className="text-3xl font-bold tracking-tighter text-center mb-12">What Pet Parents Say</h2>
+        <h2 className="text-3xl font-bold tracking-tighter text-center mb-12">What Sellers Say</h2>
         <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
           <Card>
             <CardContent className="p-6">
               <div className="flex items-start space-x-4">
                 <Avatar>
-                  <AvatarImage src="/placeholder.svg" />
-                  <AvatarFallback>JD</AvatarFallback>
+                  <AvatarImage src="/testimonials/sarah.jpg" />
+                  <AvatarFallback>SJ</AvatarFallback>
                 </Avatar>
                 <div>
                   <p className="text-sm text-muted-foreground mb-2">
-                    "This app has made pet care so much easier! The reminders are a lifesaver."
+                    "Managing listings across Amazon and Etsy used to be a nightmare. This platform saves me hours every day with automated syncing!"
                   </p>
-                  <p className="text-sm font-medium">Jane Doe</p>
-                  <p className="text-xs text-muted-foreground">Dog Parent</p>
+                  <p className="text-sm font-medium">Sarah Johnson</p>
+                  <p className="text-xs text-muted-foreground">Handmade Jewelry Seller</p>
                 </div>
               </div>
             </CardContent>
@@ -28,15 +28,15 @@ export function Testimonials() {
             <CardContent className="p-6">
               <div className="flex items-start space-x-4">
                 <Avatar>
-                  <AvatarImage src="/placeholder.svg" />
-                  <AvatarFallback>JS</AvatarFallback>
+                  <AvatarImage src="/testimonials/mark.jpg" />
+                  <AvatarFallback>MT</AvatarFallback>
                 </Avatar>
                 <div>
                   <p className="text-sm text-muted-foreground mb-2">
-                    "I love how I can track all my pets' health records in one place. Highly recommended!"
+                    "The inventory sync feature is a game-changer. No more overselling across platforms. It's increased our efficiency by 300%!"
                   </p>
-                  <p className="text-sm font-medium">John Smith</p>
-                  <p className="text-xs text-muted-foreground">Cat Parent</p>
+                  <p className="text-sm font-medium">Mark Thompson</p>
+                  <p className="text-xs text-muted-foreground">Electronics Store Owner</p>
                 </div>
               </div>
             </CardContent>
@@ -45,15 +45,15 @@ export function Testimonials() {
             <CardContent className="p-6">
               <div className="flex items-start space-x-4">
                 <Avatar>
-                  <AvatarImage src="/placeholder.svg" />
-                  <AvatarFallback>AS</AvatarFallback>
+                  <AvatarImage src="/testimonials/lisa.jpg" />
+                  <AvatarFallback>LR</AvatarFallback>
                 </Avatar>
                 <div>
                   <p className="text-sm text-muted-foreground mb-2">
-                    "The vet appointment scheduling feature saves me so much time!"
+                    "The analytics dashboard helps me make data-driven decisions. Our profit margins have improved by 40% since using this platform!"
                   </p>
-                  <p className="text-sm font-medium">Alice Smith</p>
-                  <p className="text-xs text-muted-foreground">Multiple Pets</p>
+                  <p className="text-sm font-medium">Lisa Rodriguez</p>
+                  <p className="text-xs text-muted-foreground">Fashion Boutique Owner</p>
                 </div>
               </div>
             </CardContent>
@@ -63,4 +63,3 @@ export function Testimonials() {
     </section>
   )
 }
-
