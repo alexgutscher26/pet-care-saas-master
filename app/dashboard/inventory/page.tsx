@@ -13,8 +13,7 @@ const mockData = [
     image: "/images/products/nike-airmax.jpg",
     costPrice: 89.99,
     sellingPrice: 149.99,
-    quantity: 15,
-    status: "In Stock",
+    status: "Listed",
     platforms: ["facebook", "ebay", "mercari"],
     category: "Shoes",
     brand: "Nike",
@@ -27,8 +26,7 @@ const mockData = [
     image: "/images/products/adidas-boost.jpg",
     costPrice: 99.99,
     sellingPrice: 179.99,
-    quantity: 3,
-    status: "Low Stock",
+    status: "Draft",
     platforms: ["ebay"],
     category: "Shoes",
     brand: "Adidas",
@@ -41,8 +39,7 @@ const mockData = [
     image: "/images/products/puma-rsx.jpg",
     costPrice: 59.99,
     sellingPrice: 99.99,
-    quantity: 0,
-    status: "Out of Stock",
+    status: "Sold",
     platforms: ["mercari"],
     category: "Shoes",
     brand: "Puma",
@@ -52,16 +49,19 @@ const mockData = [
 
 export default function InventoryPage() {
   const calculateStats = () => {
-    const inStock = mockData.filter(item => item.status === "In Stock").length;
-    const lowStock = mockData.filter(item => item.status === "Low Stock").length;
-    const outOfStock = mockData.filter(item => item.status === "Out of Stock").length;
-    const totalValue = mockData.reduce((sum, item) => sum + (item.sellingPrice * item.quantity), 0);
+    const listed = mockData.filter(item => item.status === "Listed").length;
+    const draft = mockData.filter(item => item.status === "Draft").length;
+    const sold = mockData.filter(item => item.status === "Sold").length;
+    const totalValue = mockData.reduce((sum, item) => 
+      sum + (item.status === "Listed" ? item.sellingPrice : 0), 
+      0
+    );
 
     return {
       totalItems: mockData.length,
-      inStock,
-      lowStock,
-      outOfStock,
+      listed,
+      draft,
+      sold,
       totalValue,
     };
   };

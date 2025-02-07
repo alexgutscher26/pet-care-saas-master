@@ -44,8 +44,7 @@ interface InventoryItem {
   image: string;
   costPrice: number;
   sellingPrice: number;
-  quantity: number;
-  status: "In Stock" | "Low Stock" | "Out of Stock";
+  status: "Listed" | "Draft" | "Sold";
   platforms: string[];
   category: string;
   brand: string;
@@ -62,7 +61,7 @@ const platforms: Record<string, Platform> = {
   mercari: { name: "Mercari", icon: <Store className="h-4 w-4" /> },
 };
 
-type SortField = "name" | "quantity" | "sellingPrice" | "costPrice";
+type SortField = "name" | "sellingPrice" | "costPrice";
 type SortOrder = "asc" | "desc";
 
 export function InventoryTable({ data }: InventoryTableProps) {
@@ -76,12 +75,12 @@ export function InventoryTable({ data }: InventoryTableProps) {
 
   const getStatusColor = (status: InventoryItem["status"]) => {
     switch (status) {
-      case "In Stock":
+      case "Listed":
         return "bg-green-100 text-green-800";
-      case "Low Stock":
+      case "Draft":
         return "bg-yellow-100 text-yellow-800";
-      case "Out of Stock":
-        return "bg-red-100 text-red-800";
+      case "Sold":
+        return "bg-blue-100 text-blue-800";
       default:
         return "bg-gray-100 text-gray-800";
     }
@@ -161,7 +160,7 @@ export function InventoryTable({ data }: InventoryTableProps) {
               </Button>
             </div>
           )}
-          {(["All", "In Stock", "Low Stock", "Out of Stock"] as const).map((status) => (
+          {(["All", "Listed", "Draft", "Sold"] as const).map((status) => (
             <Button
               key={status}
               variant={statusFilter === status ? "default" : "outline"}
@@ -220,16 +219,6 @@ export function InventoryTable({ data }: InventoryTableProps) {
                   <ArrowUpDown className="h-4 w-4" />
                 </Button>
               </TableHead>
-              <TableHead>
-                <Button
-                  variant="ghost"
-                  onClick={() => toggleSort("quantity")}
-                  className="flex items-center gap-1"
-                >
-                  Quantity
-                  <ArrowUpDown className="h-4 w-4" />
-                </Button>
-              </TableHead>
               <TableHead>Status</TableHead>
               <TableHead>Platforms</TableHead>
               <TableHead>Last Updated</TableHead>
@@ -261,11 +250,17 @@ export function InventoryTable({ data }: InventoryTableProps) {
                     </div>
                   )}
                 </TableCell>
-                <TableCell className="font-medium">{item.name}</TableCell>
+                <TableCell>
+                  <div className="space-y-1">
+                    <div className="font-medium">{item.name}</div>
+                    <div className="text-xs text-gray-500">
+                      {item.category} • {item.brand}
+                    </div>
+                  </div>
+                </TableCell>
                 <TableCell>{item.sku}</TableCell>
                 <TableCell>${item.costPrice.toFixed(2)}</TableCell>
                 <TableCell>${item.sellingPrice.toFixed(2)}</TableCell>
-                <TableCell>{item.quantity}</TableCell>
                 <TableCell>
                   <Badge
                     variant="secondary"
@@ -303,7 +298,7 @@ export function InventoryTable({ data }: InventoryTableProps) {
                       <DropdownMenuSeparator />
                       <DropdownMenuItem>Edit Item</DropdownMenuItem>
                       <DropdownMenuItem>View Details</DropdownMenuItem>
-                      <DropdownMenuItem>Update Stock</DropdownMenuItem>
+                      <DropdownMenuItem>List Item</DropdownMenuItem>
                       <DropdownMenuItem className="text-red-600">
                         Delete Item
                       </DropdownMenuItem>
