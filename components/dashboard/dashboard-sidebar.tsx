@@ -49,15 +49,18 @@ export function DashboardSidebar() {
   return (
     <aside className="fixed left-0 top-0 z-40 h-screen w-64 border-r bg-background">
       {/* Logo */}
-      <div className="flex h-16 items-center border-b px-6">
-        <Link href="/dashboard" className="flex items-center gap-2 font-semibold">
-          <span className="text-xl">Reseller Dashboard</span>
+      <div className="flex h-14 items-center border-b px-4">
+        <Link href="/dashboard" className="flex items-center gap-2">
+          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-black">
+            <span className="text-sm font-bold text-white">RL</span>
+          </div>
+          <span className="text-sm font-medium">ResellersLab</span>
         </Link>
       </div>
 
       {/* Navigation Links */}
-      <div className="flex h-[calc(100vh-4rem)] flex-col justify-between py-4">
-        <nav className="space-y-1 px-3">
+      <div className="flex h-[calc(100vh-3.5rem)] flex-col justify-between py-2">
+        <nav className="space-y-1 px-2">
           {sidebarLinks.map((link) => {
             const Icon = link.icon;
             return (
@@ -65,7 +68,7 @@ export function DashboardSidebar() {
                 key={link.href}
                 href={link.href}
                 className={cn(
-                  'flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors',
+                  'flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium transition-colors',
                   pathname === link.href
                     ? 'bg-primary text-primary-foreground'
                     : 'hover:bg-muted'
@@ -79,17 +82,17 @@ export function DashboardSidebar() {
         </nav>
 
         {/* Bottom Links */}
-        <div className="space-y-1 px-3">
+        <div className="space-y-1 px-2">
           <Link
             href="/help"
-            className="flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors hover:bg-muted"
+            className="flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium transition-colors hover:bg-muted"
           >
             <HelpCircle className="h-4 w-4" />
             Help & Support
           </Link>
           <button
             onClick={() => signOut()}
-            className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors hover:bg-muted"
+            className="flex w-full items-center gap-3 rounded-md px-3 py-2 text-sm font-medium transition-colors hover:bg-muted"
           >
             <LogOut className="h-4 w-4" />
             Sign Out
