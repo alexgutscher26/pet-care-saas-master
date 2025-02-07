@@ -1,4 +1,4 @@
-import { Metadata } from 'next'
+import { type Metadata } from 'next'
 import { Header } from "@/components/header"
 import { Hero } from "@/components/hero"
 import { AiPersonalization } from "@/components/ai-personalization"
