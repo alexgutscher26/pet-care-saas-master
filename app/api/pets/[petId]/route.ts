@@ -2,9 +2,9 @@ import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs';
 import { cookies } from 'next/headers';
 import { NextResponse } from 'next/server';
 
-export async function GET(
-  _req: Request,
-  { params }: { params: { id: string } }
+export async function PATCH(
+  req: Request,
+  { params }: { params: { petId: string } }
 ) {
   try {
     const cookieStore = await cookies();
@@ -17,12 +17,70 @@ export async function GET(
       return new NextResponse('Unauthorized', { status: 401 });
     }
 
-    const { id } = params;
+    const { petId } = params;
+    const { name, type, breed, birthDate, age, weight } = await req.json();
+
+    // First verify the pet belongs to the user
+    const { data: existingPet, error: fetchError } = await supabase
+      .from('pets')
+      .select()
+      .eq('id', petId)
+      .eq('user_id', user.id)
+      .single();
+
+    if (fetchError || !existingPet) {
+      return new NextResponse('Pet not found', { status: 404 });
+    }
+
+    const { data, error } = await supabase
+      .from('pets')
+      .update({
+        name,
+        type,
+        breed: breed || null,
+        birth_date: birthDate || null,
+        age: age || null,
+        weight: weight || null,
+        updated_at: new Date().toISOString(),
+      })
+      .eq('id', petId)
+      .eq('user_id', user.id)
+      .select()
+      .single();
+
+    if (error) {
+      console.error('Error updating pet:', error);
+      return new NextResponse(error.message, { status: 500 });
+    }
+
+    return NextResponse.json(data);
+  } catch (error) {
+    console.error('Internal error:', error);
+    return new NextResponse('Internal Error', { status: 500 });
+  }
+}
+
+export async function GET(
+  _req: Request,
+  { params }: { params: { petId: string } }
+) {
+  try {
+    const cookieStore = await cookies();
+    const supabase = createRouteHandlerClient({ cookies: () => cookieStore });
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+
+    if (!user) {
+      return new NextResponse('Unauthorized', { status: 401 });
+    }
+
+    const { petId } = params;
 
     const { data, error } = await supabase
       .from('pets')
       .select()
-      .eq('id', id)
+      .eq('id', petId)
       .eq('user_id', user.id)
       .single();
 
@@ -42,67 +100,9 @@ export async function GET(
   }
 }
 
-export async function PATCH(
-  req: Request,
-  { params }: { params: { id: string } }
-) {
-  try {
-    const cookieStore = await cookies();
-    const supabase = createRouteHandlerClient({ cookies: () => cookieStore });
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
-
-    if (!user) {
-      return new NextResponse('Unauthorized', { status: 401 });
-    }
-
-    const { id } = params;
-    const { name, type, breed, birthDate, age, weight } = await req.json();
-
-    // First verify the pet belongs to the user
-    const { data: existingPet, error: fetchError } = await supabase
-      .from('pets')
-      .select()
-      .eq('id', id)
-      .eq('user_id', user.id)
-      .single();
-
-    if (fetchError || !existingPet) {
-      return new NextResponse('Pet not found', { status: 404 });
-    }
-
-    const { data, error } = await supabase
-      .from('pets')
-      .update({
-        name,
-        type,
-        breed: breed || null,
-        birth_date: birthDate || null,
-        age: age || null,
-        weight: weight || null,
-        updated_at: new Date().toISOString(),
-      })
-      .eq('id', id)
-      .eq('user_id', user.id)
-      .select()
-      .single();
-
-    if (error) {
-      console.error('Error updating pet:', error);
-      return new NextResponse(error.message, { status: 500 });
-    }
-
-    return NextResponse.json(data);
-  } catch (error) {
-    console.error('Internal error:', error);
-    return new NextResponse('Internal Error', { status: 500 });
-  }
-}
-
 export async function DELETE(
   _req: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: { petId: string } }
 ) {
   try {
     const cookieStore = await cookies();
@@ -115,12 +115,12 @@ export async function DELETE(
       return new NextResponse('Unauthorized', { status: 401 });
     }
 
-    const { id } = params;
+    const { petId } = params;
 
     const { error } = await supabase
       .from('pets')
       .delete()
-      .eq('id', id)
+      .eq('id', petId)
       .eq('user_id', user.id);
 
     if (error) {

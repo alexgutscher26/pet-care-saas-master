@@ -31,7 +31,7 @@ type FormValues = z.infer<typeof formSchema>;
 
 export function AddPetForm() {
   const router = useRouter();
-  const [isLoading, setIsLoading] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const queryClient = useQueryClient();
 
   const form = useForm<FormValues>({
@@ -46,37 +46,57 @@ export function AddPetForm() {
 
   async function onSubmit(data: FormValues) {
     try {
-      setIsLoading(true);
+      setIsSubmitting(true);
+
+      // Convert empty strings to null for optional fields
+      const payload = {
+        name: data.name,
+        type: data.type,
+        breed: data.breed || null,
+        birthDate: data.birthDate || null,
+      };
+
       const response = await fetch('/api/pets', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-          name: data.name,
-          type: data.type,
-          breed: data.breed || null,
-          birthDate: data.birthDate || null,
-        }),
+        body: JSON.stringify(payload),
       });
 
       if (!response.ok) {
         const errorText = await response.text();
+        if (response.status === 403) {
+          throw new Error('Permission denied. Please make sure you are logged in.');
+        }
         throw new Error(errorText || 'Failed to add pet');
       }
 
       const newPet = await response.json();
       
-      // Invalidate and refetch pets query
+      // Show success message
+      toast({
+        title: 'Success',
+        description: 'Pet added successfully',
+      });
+
+      // Invalidate pets query to refresh the list
       await queryClient.invalidateQueries({ queryKey: ['pets'] });
-      
-      toast.success('Pet added successfully!');
-      router.push('/pets'); 
+
+      // Reset form
+      form.reset();
+
+      // Redirect to pets list
+      router.push('/pets');
     } catch (error) {
       console.error('Error adding pet:', error);
-      toast.error(error instanceof Error ? error.message : 'Something went wrong. Please try again.');
+      toast({
+        variant: 'destructive',
+        title: 'Error',
+        description: error instanceof Error ? error.message : 'Failed to add pet',
+      });
     } finally {
-      setIsLoading(false);
+      setIsSubmitting(false);
     }
   }
 
@@ -156,8 +176,8 @@ export function AddPetForm() {
                 </FormItem>
               )}
             />
-            <Button type="submit" className="w-full" disabled={isLoading}>
-              {isLoading ? 'Adding...' : 'Add Pet'}
+            <Button type="submit" className="w-full" disabled={isSubmitting}>
+              {isSubmitting ? 'Adding...' : 'Add Pet'}
             </Button>
           </form>
         </Form>

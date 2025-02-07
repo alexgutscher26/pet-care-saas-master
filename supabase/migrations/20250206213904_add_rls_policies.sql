@@ -22,31 +22,36 @@ CREATE POLICY "Users can create their own pets"
 ON pets FOR INSERT
 TO authenticated
 WITH CHECK (
-  auth.uid()::uuid = user_id
+  auth.uid() IS NOT NULL AND
+  user_id = auth.uid()::uuid
 );
 
 CREATE POLICY "Users can view their own pets"
 ON pets FOR SELECT
 TO authenticated
 USING (
-  auth.uid()::uuid = user_id
+  auth.uid() IS NOT NULL AND
+  user_id = auth.uid()::uuid
 );
 
 CREATE POLICY "Users can update their own pets"
 ON pets FOR UPDATE
 TO authenticated
 USING (
-  auth.uid()::uuid = user_id
+  auth.uid() IS NOT NULL AND
+  user_id = auth.uid()::uuid
 )
 WITH CHECK (
-  auth.uid()::uuid = user_id
+  auth.uid() IS NOT NULL AND
+  user_id = auth.uid()::uuid
 );
 
 CREATE POLICY "Users can delete their own pets"
 ON pets FOR DELETE
 TO authenticated
 USING (
-  auth.uid()::uuid = user_id
+  auth.uid() IS NOT NULL AND
+  user_id = auth.uid()::uuid
 );
 
 -- Health Records policies

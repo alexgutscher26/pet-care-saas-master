@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
@@ -15,9 +15,8 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
 import { useQuery, useQueryClient, useMutation } from '@tanstack/react-query';
-import { type Pet } from '@/lib/types';
+import { Pet } from '@/types/pet';
 import { Loader2 } from 'lucide-react';
 
 const formSchema = z.object({
@@ -25,9 +24,28 @@ const formSchema = z.object({
   type: z.string().min(1, 'Type is required'),
   breed: z.string().optional(),
   birthDate: z.string().optional(),
+  age: z.string()
+    .optional()
+    .transform((val) => (val ? parseInt(val, 10) : null))
+    .refine((val) => !val || (val >= 0 && val <= 100), {
+      message: 'Age must be between 0 and 100',
+    }),
+  weight: z.string()
+    .optional()
+    .transform((val) => (val ? parseFloat(val) : null))
+    .refine((val) => !val || (val >= 0 && val <= 1000), {
+      message: 'Weight must be between 0 and 1000',
+    }),
 });
 
-type FormValues = z.infer<typeof formSchema>;
+type FormValues = {
+  name: string;
+  type: string;
+  breed: string;
+  birthDate: string;
+  age: string;
+  weight: string;
+};
 
 interface EditPetFormProps {
   petId: string;
@@ -49,6 +67,31 @@ export function EditPetForm({ petId }: EditPetFormProps) {
     },
   });
 
+  const form = useForm<FormValues>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      name: '',
+      type: '',
+      breed: '',
+      birthDate: '',
+      age: '',
+      weight: '',
+    },
+  });
+
+  useEffect(() => {
+    if (pet) {
+      form.reset({
+        name: pet.name,
+        type: pet.type,
+        breed: pet.breed || '',
+        birthDate: pet.birth_date || '',
+        age: pet.age?.toString() || '',
+        weight: pet.weight?.toString() || '',
+      });
+    }
+  }, [pet, form]);
+
   const updatePetMutation = useMutation({
     mutationFn: async (data: FormValues) => {
       const response = await fetch(`/api/pets/${petId}`, {
@@ -60,7 +103,8 @@ export function EditPetForm({ petId }: EditPetFormProps) {
       });
 
       if (!response.ok) {
-        throw new Error('Failed to update pet');
+        const text = await response.text();
+        throw new Error(text || 'Failed to update pet');
       }
 
       return response.json();
@@ -74,26 +118,19 @@ export function EditPetForm({ petId }: EditPetFormProps) {
     },
   });
 
-  const form = useForm<FormValues>({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-      name: pet?.name || '',
-      type: pet?.type || '',
-      breed: pet?.breed || '',
-      birthDate: pet?.birth_date || '',
-    },
-    values: {
-      name: pet?.name || '',
-      type: pet?.type || '',
-      breed: pet?.breed || '',
-      birthDate: pet?.birth_date || '',
-    },
-  });
-
   async function onSubmit(data: FormValues) {
     try {
       setIsSubmitting(true);
-      await updatePetMutation.mutateAsync(data);
+      // Convert empty strings to null for optional fields
+      const payload = {
+        ...data,
+        breed: data.breed || null,
+        birthDate: data.birthDate || null,
+        age: data.age ? parseInt(data.age, 10) : null,
+        weight: data.weight ? parseFloat(data.weight) : null,
+      };
+      
+      await updatePetMutation.mutateAsync(payload);
       toast({
         title: 'Success',
         description: 'Pet updated successfully',
@@ -120,7 +157,7 @@ export function EditPetForm({ petId }: EditPetFormProps) {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
         <FormField
           control={form.control}
           name="name"
@@ -152,7 +189,7 @@ export function EditPetForm({ petId }: EditPetFormProps) {
           name="breed"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Breed (Optional)</FormLabel>
+              <FormLabel>Breed (optional)</FormLabel>
               <FormControl>
                 <Input {...field} />
               </FormControl>
@@ -165,7 +202,7 @@ export function EditPetForm({ petId }: EditPetFormProps) {
           name="birthDate"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Birth Date (Optional)</FormLabel>
+              <FormLabel>Birth Date (optional)</FormLabel>
               <FormControl>
                 <Input type="date" {...field} />
               </FormControl>
@@ -173,18 +210,54 @@ export function EditPetForm({ petId }: EditPetFormProps) {
             </FormItem>
           )}
         />
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <FormField
+            control={form.control}
+            name="age"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Age (years)</FormLabel>
+                <FormControl>
+                  <Input 
+                    type="number" 
+                    min="0" 
+                    step="1" 
+                    {...field} 
+                    onChange={(e) => field.onChange(e.target.value)}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="weight"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Weight (kg)</FormLabel>
+                <FormControl>
+                  <Input 
+                    type="number" 
+                    min="0" 
+                    step="0.1" 
+                    {...field}
+                    onChange={(e) => field.onChange(e.target.value)}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
         <Button 
           type="submit" 
           disabled={isSubmitting || updatePetMutation.isPending}
         >
-          {(isSubmitting || updatePetMutation.isPending) ? (
-            <>
-              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-              Updating...
-            </>
-          ) : (
-            'Update Pet'
+          {(isSubmitting || updatePetMutation.isPending) && (
+            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
           )}
+          Save Changes
         </Button>
       </form>
     </Form>

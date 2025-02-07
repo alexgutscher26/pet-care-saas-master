@@ -71,6 +71,30 @@ CREATE TABLE IF NOT EXISTS pets (
     birth_date DATE
 );
 
+-- Add age and weight columns if they don't exist
+DO $$ 
+BEGIN
+    -- Add age column if it doesn't exist
+    IF NOT EXISTS (
+        SELECT 1 
+        FROM information_schema.columns 
+        WHERE table_name = 'pets' 
+        AND column_name = 'age'
+    ) THEN
+        ALTER TABLE pets ADD COLUMN age INTEGER;
+    END IF;
+
+    -- Add weight column if it doesn't exist
+    IF NOT EXISTS (
+        SELECT 1 
+        FROM information_schema.columns 
+        WHERE table_name = 'pets' 
+        AND column_name = 'weight'
+    ) THEN
+        ALTER TABLE pets ADD COLUMN weight DECIMAL(10,2);
+    END IF;
+END $$;
+
 -- Create trigger for updating timestamp
 DROP TRIGGER IF EXISTS update_pets_timestamp ON pets;
 CREATE TRIGGER update_pets_timestamp
