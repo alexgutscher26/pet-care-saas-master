@@ -30,13 +30,8 @@ export function DashboardNav() {
       <div className="flex h-14 items-center px-4">
         {/* Left section with logo and search */}
         <div className="flex flex-1 items-center gap-8">
-          {/* Logo */}
-          <Link href="/dashboard" className="flex items-center gap-2">
-            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary">
-              <span className="text-lg font-bold text-primary-foreground">RL</span>
-            </div>
-            <span className="font-semibold">ResellersLab</span>
-          </Link>
+       
+
 
           {/* Search */}
           <div className="flex w-full max-w-sm items-center">
