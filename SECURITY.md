@@ -2,83 +2,75 @@
 
 ## Supported Versions
 
-The following table outlines the versions of Pet Care that are currently receiving security updates:
+The following table outlines the versions of Multi-Platform Listing Management that are currently receiving security updates:
 
 | Version | Supported          | Notes |
 | ------- | ------------------ | ----- |
 | 1.x.x   | :white_check_mark: | Latest stable release series |
 | 0.x.x   | :x:               | Beta releases - use at your own risk |
 
-We strongly recommend using the latest version of Pet Care to ensure you have all security patches and feature updates.
+We strongly recommend using the latest version to ensure you have all security patches and feature updates.
 
 ## Security Features
 
-Pet Care implements several security measures to protect your data:
+Our platform implements robust security measures to protect your business data:
 
 - **Authentication**: Secure user authentication through [Clerk](https://clerk.com)
 - **Database Security**: Row-level security (RLS) policies in Supabase
 - **API Security**: 
   - Rate limiting to prevent abuse
-  - Input validation and sanitization
   - CORS protection
-- **Data Protection**:
-  - Encrypted data at rest and in transit
-  - Regular backups
-  - Secure password hashing
-- **Frontend Security**:
-  - XSS protection
-  - CSRF prevention
-  - Content Security Policy (CSP)
+  - API key rotation
+  - Request validation
 
-## Best Practices
+## Data Protection
 
-When using Pet Care Landing, follow these security best practices:
+- **Encryption**: All sensitive data is encrypted at rest and in transit
+- **Marketplace Integration**: Secure OAuth2 integration with supported marketplaces
+- **Payment Processing**: PCI-compliant payment processing through Stripe
+- **Backup**: Automated daily backups with point-in-time recovery
+- **Audit Logs**: Comprehensive logging of all system activities
 
-1. Keep your dependencies up to date
-2. Use strong passwords
-3. Enable two-factor authentication when available
-4. Regularly review access logs
-5. Follow the principle of least privilege
-6. Keep your API keys secure and never commit them to version control
+## Vulnerability Reporting
 
-## Reporting a Vulnerability
+We take security seriously. If you discover a security vulnerability, please follow these steps:
 
-We take security vulnerabilities seriously. If you discover a security issue, please follow these steps:
+1. **DO NOT** disclose the issue publicly
+2. Email us at security@multi-platform-listing.com with details
+3. Allow us reasonable time to respond and fix the issue
+4. We will credit you for responsible disclosure
 
-1. **Do Not** disclose the vulnerability publicly until it has been addressed.
-2. Email us at [security@petcarelanding.com](mailto:security@petcarelanding.com) with:
-   - A description of the vulnerability
-   - Steps to reproduce
-   - Potential impact
-   - Suggested fix (if any)
+## Security Best Practices
 
-### What to Expect
+We recommend users follow these security practices:
 
-- **Initial Response**: Within 48 hours
-- **Status Update**: Every 72 hours until resolution
-- **Resolution Timeline**: Typically within 1-2 weeks, depending on severity
+1. Enable two-factor authentication (2FA)
+2. Use strong, unique passwords
+3. Regularly rotate API keys
+4. Monitor account activity
+5. Keep contact information up to date
 
-### Bug Bounty Program
+## Compliance
 
-We currently do not offer a bug bounty program, but we deeply appreciate responsible disclosure of security vulnerabilities.
+Our platform is designed to comply with:
 
-## Security Updates
+- GDPR
+- CCPA
+- SOC 2 Type II
+- ISO 27001
 
-- Security updates are released as soon as possible after a vulnerability is confirmed
-- Updates are distributed through our standard release channels
-- Critical updates are announced through our security mailing list
+## Updates and Patches
 
-To stay informed about security updates:
-1. Watch our GitHub repository
-2. Subscribe to our security mailing list
-3. Follow our Twitter account [@PetCareLanding](https://twitter.com/PetCareLanding)
+Security updates are released as soon as vulnerabilities are discovered and fixed. Users are notified through:
+
+- Email notifications
+- In-app alerts
+- Release notes
+- Security advisories
 
 ## Contact
 
-For security-related questions or concerns:
-- Email: security@petcarelanding.com
-- PGP Key: [Download PGP Key](https://petcarelanding.com/security/pgp-key.asc)
-
-## Acknowledgments
-
-We maintain a [Hall of Fame](https://petcarelanding.com/security/hall-of-fame) to recognize security researchers who have responsibly disclosed vulnerabilities.
+For security-related inquiries:
+- Email: security@multi-platform-listing.com
+- Security Page: https://multi-platform-listing.com/security
+- Emergency: https://multi-platform-listing.com/security/emergency

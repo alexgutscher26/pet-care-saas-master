@@ -1,9 +1,9 @@
 'use client';
 
-import { createContext, useContext, useEffect, useRef, useMemo, useCallback, useState } from 'react';
-import { User } from '@supabase/supabase-js';
-import { supabase } from './supabase';
-import { useRouter, usePathname } from 'next/navigation';
+import { createContext, useContext, useEffect, useState } from 'react';
+import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
+import { useRouter } from 'next/navigation';
+import type { User } from '@supabase/auth-helpers-nextjs';
 
 type AuthContextType = {
   user: User | null;
@@ -15,153 +15,93 @@ type AuthContextType = {
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-const PUBLIC_ROUTES = ['/signin', '/signup'];
-
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
   const router = useRouter();
-  const pathname = usePathname();
-  const isInitialMount = useRef(true);
-  const mountedRef = useRef(true);
-  const navigationInProgress = useRef(false);
+  const supabase = createClientComponentClient();
 
-  // Initialize auth state
   useEffect(() => {
-    const checkSession = async () => {
+    const getUser = async () => {
       try {
-        const { data: { session } } = await supabase.auth.getSession();
-        if (mountedRef.current) {
-          setUser(session?.user ?? null);
-          setLoading(false);
+        const { data: { session }, error } = await supabase.auth.getSession();
+        if (error) {
+          console.error('Error getting session:', error);
+          return;
+        }
+        
+        if (session?.user) {
+          setUser(session.user);
         }
       } catch (error) {
-        console.error('Error checking session:', error);
-        if (mountedRef.current) {
-          setLoading(false);
-        }
+        console.error('Error in getUser:', error);
+      } finally {
+        setLoading(false);
       }
     };
 
-    checkSession();
+    // Get initial session
+    getUser();
 
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
-      if (!mountedRef.current) return;
-
+    // Listen for auth changes
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, session) => {
       setUser(session?.user ?? null);
-      
-      if (!navigationInProgress.current) {
-        navigationInProgress.current = true;
-        try {
-          if (event === 'SIGNED_IN') {
-            router.push('/dashboard');
-          } else if (event === 'SIGNED_OUT') {
-            router.push('/signin');
-          }
-        } catch (error) {
-          console.error('Navigation error:', error);
-        } finally {
-          navigationInProgress.current = false;
-        }
-      }
+      setLoading(false);
+      router.refresh();
     });
 
     return () => {
-      mountedRef.current = false;
       subscription.unsubscribe();
     };
-  }, [router]);
+  }, [supabase, router]);
 
-  // Handle route protection
-  useEffect(() => {
-    if (isInitialMount.current || loading || navigationInProgress.current) {
-      isInitialMount.current = false;
-      return;
-    }
-
-    const isPublicRoute = PUBLIC_ROUTES.includes(pathname);
-    if (!navigationInProgress.current) {
-      navigationInProgress.current = true;
-      try {
-        if (!user && !isPublicRoute) {
-          router.push('/signin');
-        } else if (user && isPublicRoute) {
-          router.push('/dashboard');
-        }
-      } catch (error) {
-        console.error('Navigation error:', error);
-      } finally {
-        navigationInProgress.current = false;
-      }
-    }
-  }, [user, loading, pathname, router]);
-
-  const signIn = useCallback(async (email: string, password: string) => {
-    const { error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-    });
-
-    if (error) {
+  const signIn = async (email: string, password: string) => {
+    try {
+      const { error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
+      if (error) throw error;
+    } catch (error) {
+      console.error('Error signing in:', error);
       throw error;
     }
-  }, []);
+  };
 
-  const signUp = useCallback(async (email: string, password: string) => {
-    const { error, data } = await supabase.auth.signUp({
-      email,
-      password,
-      options: {
-        emailRedirectTo: `${window.location.origin}/auth/callback`,
-        data: {
-          name: email.split('@')[0], // Default name from email
-        }
-      }
-    });
-
-    if (error) {
+  const signUp = async (email: string, password: string) => {
+    try {
+      const { error } = await supabase.auth.signUp({
+        email,
+        password,
+      });
+      if (error) throw error;
+    } catch (error) {
+      console.error('Error signing up:', error);
       throw error;
     }
+  };
 
-    // Check if user was created in auth.users
-    if (data.user) {
-      // Wait a bit for the trigger to complete
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
-      // Verify user was created in public.users
-      const { data: userData, error: userError } = await supabase
-        .from('users')
-        .select('*')
-        .eq('id', data.user.id)
-        .single();
-
-      if (userError || !userData) {
-        console.error('User creation in public.users failed:', userError);
-        throw new Error('Failed to create user profile');
-      }
+  const signOut = async () => {
+    try {
+      await supabase.auth.signOut();
+      setUser(null);
+      router.push('/login');
+    } catch (error) {
+      console.error('Error signing out:', error);
     }
-  }, [supabase.auth]);
+  };
 
-  const signOut = useCallback(async () => {
-    const { error } = await supabase.auth.signOut();
-    if (error) {
-      throw error;
-    }
-  }, []);
-
-  const value = useMemo(() => ({
+  const value = {
     user,
     loading,
     signIn,
     signUp,
     signOut,
-  }), [user, loading, signIn, signUp, signOut]);
+  };
 
-  return (
-    <AuthContext.Provider value={value}>
-      {children}
-    </AuthContext.Provider>
-  );
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
 
 export function useAuth() {

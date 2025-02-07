@@ -1,67 +1,29 @@
-import './globals.css'
-import { Metadata } from 'next'
+'use client';
 
-export const metadata: Metadata = {
-  title: {
-    default: 'Pet Care - Your Pet Management Solution',
-    template: '%s | Pet Care'
-  },
-  description: 'Pet Care helps you manage your pets\' health, schedules, and important information all in one place. Track vaccinations, appointments, and more.',
-  keywords: ['pet care', 'pet management', 'pet health', 'pet tracking', 'veterinary appointments', 'pet records'],
-  authors: [{ name: 'Pet Care Team' }],
-  creator: 'Pet Care',
-  publisher: 'Pet Care',
-  robots: {
-    index: true,
-    follow: true,
-  },
-  openGraph: {
-    type: 'website',
-    locale: 'en_US',
-    url: 'https://petcare.com',
-    siteName: 'Pet Care',
-    title: 'Pet Care - Your Pet Management Solution',
-    description: 'Pet Care helps you manage your pets\' health, schedules, and important information all in one place.',
-    images: [
-      {
-        url: '/og-image.jpg',
-        width: 1200,
-        height: 630,
-        alt: 'Pet Care - Your Pet Management Solution'
-      }
-    ]
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: 'Pet Care - Your Pet Management Solution',
-    description: 'Pet Care helps you manage your pets\' health, schedules, and important information all in one place.',
-    images: ['/twitter-image.jpg'],
-    creator: '@petcare'
-  },
-  category: 'Pet Management'
-}
+import { Inter } from 'next/font/google';
+import './globals.css';
+import { Toaster } from '@/components/ui/toaster';
+import { AuthProvider } from '@/lib/auth-context';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
-export const viewport = {
-  width: 'device-width',
-  initialScale: 1,
-  maximumScale: 1,
-  userScalable: false,
-};
-
-import ClientLayout from '@/components/client-layout'
+const inter = Inter({ subsets: ['latin'] });
+const queryClient = new QueryClient();
 
 export default function RootLayout({
   children,
-}: Readonly<{
-  children: React.ReactNode
-}>) {
+}: {
+  children: React.ReactNode;
+}) {
   return (
     <html lang="en" className="h-full">
-      <body className="h-full">
-        <ClientLayout>
-          {children}
-        </ClientLayout>
+      <body className={`h-full ${inter.className}`}>
+        <QueryClientProvider client={queryClient}>
+          <AuthProvider>
+            {children}
+            <Toaster />
+          </AuthProvider>
+        </QueryClientProvider>
       </body>
     </html>
-  )
+  );
 }
