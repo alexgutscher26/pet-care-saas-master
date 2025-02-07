@@ -1,7 +1,6 @@
 'use client';
 
 import { AuthProvider } from '@/lib/auth-context';
-import Providers from '@/app/providers/providers';
 
 export default function ClientLayout({
   children,
@@ -10,9 +9,7 @@ export default function ClientLayout({
 }) {
   return (
     <AuthProvider>
-      <Providers>
         {children}
-      </Providers>
     </AuthProvider>
   );
 }

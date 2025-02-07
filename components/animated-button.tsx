@@ -3,7 +3,6 @@
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/lib/auth-context";
 import { Button } from "@/components/ui/button";
-import { ArrowRightIcon } from "lucide-react";
 
 interface CTAButtonProps {
   children: React.ReactNode;

@@ -1,48 +1,36 @@
-import { MessageCircle, TrendingUp, Share2 } from "lucide-react"
-import { Badge } from "@/components/ui/badge"
+import { AnalyticsIcon, SyncIcon } from "./icons"
 
 export function AiFeatures() {
   return (
-    <section className="py-24">
+    <section className="w-full py-12 md:py-24 lg:py-32">
       <div className="container px-4 md:px-6">
-        <div className="flex flex-col items-center space-y-4 text-center">
-          <Badge variant="secondary" className="h-6">
-            Features
-          </Badge>
-          <h2 className="text-3xl font-serif font-medium tracking-tight sm:text-4xl md:text-5xl">
-            AI-Enhanced Pet Care System
-          </h2>
-          <p className="max-w-[700px] text-muted-foreground md:text-xl">
-            Your personal AI companion that understands the unique needs and challenges of pet parenthood
-          </p>
+        <div className="flex flex-col items-center justify-center space-y-4 text-center">
+          <div className="space-y-2">
+            <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">AI-Powered E-commerce Management</h2>
+            <p className="max-w-[900px] text-gray-500 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed dark:text-gray-400">
+              Our advanced AI technology helps you optimize your listings and grow your business across multiple marketplaces
+            </p>
+          </div>
         </div>
-        <div className="mx-auto grid max-w-5xl gap-8 mt-16 md:grid-cols-3">
-          <div className="flex flex-col items-center space-y-4 text-center">
-            <div className="flex h-14 w-14 items-center justify-center rounded-full bg-muted">
-              <MessageCircle className="h-6 w-6" />
+        <div className="mx-auto grid max-w-5xl items-center gap-6 py-12 lg:grid-cols-2 lg:gap-10">
+          <div className="space-y-4">
+            <div className="inline-flex h-12 w-12 items-center justify-center rounded-lg bg-gray-100 dark:bg-gray-800">
+              <AnalyticsIcon size={24} />
             </div>
-            <h3 className="text-xl font-bold">Smart Messages</h3>
-            <p className="text-muted-foreground">
-              Our AI analyzes your pet's needs and sends personalized care reminders and recommendations
+            <h3 className="text-xl font-bold">Smart Pricing Optimization</h3>
+            <p className="text-gray-500 dark:text-gray-400">
+              Our AI analyzes market trends and competitor pricing to suggest optimal price points across all your marketplaces,
+              helping you maximize profits while staying competitive.
             </p>
           </div>
-          <div className="flex flex-col items-center space-y-4 text-center">
-            <div className="flex h-14 w-14 items-center justify-center rounded-full bg-muted">
-              <TrendingUp className="h-6 w-6" />
+          <div className="space-y-4">
+            <div className="inline-flex h-12 w-12 items-center justify-center rounded-lg bg-gray-100 dark:bg-gray-800">
+              <SyncIcon size={24} />
             </div>
-            <h3 className="text-xl font-bold">Progress Tracking</h3>
-            <p className="text-muted-foreground">
-              Track your pet's health journey over time. We'll help you celebrate improvements and maintain consistent
-              care
-            </p>
-          </div>
-          <div className="flex flex-col items-center space-y-4 text-center">
-            <div className="flex h-14 w-14 items-center justify-center rounded-full bg-muted">
-              <Share2 className="h-6 w-6" />
-            </div>
-            <h3 className="text-xl font-bold">Multi-Channel Delivery</h3>
-            <p className="text-muted-foreground">
-              Get updates and alerts through your preferred channels - email, SMS, or push notifications
+            <h3 className="text-xl font-bold">Automated Inventory Sync</h3>
+            <p className="text-gray-500 dark:text-gray-400">
+              Keep your inventory levels perfectly synchronized across all platforms with our intelligent automation system.
+              Prevent overselling and stockouts automatically.
             </p>
           </div>
         </div>
@@ -50,4 +38,3 @@ export function AiFeatures() {
     </section>
   )
 }
-

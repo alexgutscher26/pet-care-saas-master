@@ -1,40 +1,53 @@
+import { SyncIcon, AmazonIcon, AnalyticsIcon, ShopifyIcon } from "./icons"
+
 export function HowItWorksDetailed() {
   return (
     <section className="py-24">
-          <div className="container px-4 md:px-6">
+      <div className="container px-4 md:px-6">
         <div className="mx-auto max-w-[800px] rounded-lg border bg-card p-8">
           <h2 className="mb-8 text-center text-3xl font-bold">How It Works</h2>
           <div className="space-y-8">
             <div className="flex gap-4">
               <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary text-primary-foreground">
-                1
+                <SyncIcon size={16} />
               </div>
               <div>
-                <h3 className="font-bold">Sign Up & Connect</h3>
+                <h3 className="font-bold">Connect Your Marketplaces</h3>
                 <p className="text-muted-foreground">
-                  Create your account and connect your preferred communication channels for pet care updates
+                  Easily integrate with Amazon, Etsy, Shopify and other major e-commerce platforms through our secure API
                 </p>
               </div>
             </div>
             <div className="flex gap-4">
               <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary text-primary-foreground">
-                2
+                <AmazonIcon size={16} />
               </div>
               <div>
-                <h3 className="font-bold">Add Your Pet's Information</h3>
+                <h3 className="font-bold">Import Your Listings</h3>
                 <p className="text-muted-foreground">
-                  Input your pet's details and health history so our AI can provide personalized care recommendations
+                  Automatically import all your existing product listings, inventory levels, and pricing data
                 </p>
               </div>
             </div>
             <div className="flex gap-4">
               <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary text-primary-foreground">
-                3
+                <AnalyticsIcon size={16} />
               </div>
               <div>
-                <h3 className="font-bold">Receive Smart Care Support</h3>
+                <h3 className="font-bold">Manage & Optimize</h3>
                 <p className="text-muted-foreground">
-                  Get thoughtful reminders and insights that help you maintain optimal care for your pet's well-being
+                  Control everything from one dashboard - update listings, sync inventory, and optimize pricing across platforms
+                </p>
+              </div>
+            </div>
+            <div className="flex gap-4">
+              <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary text-primary-foreground">
+                <ShopifyIcon size={16} />
+              </div>
+              <div>
+                <h3 className="font-bold">Scale Your Business</h3>
+                <p className="text-muted-foreground">
+                  Expand to new marketplaces, automate routine tasks, and grow your e-commerce business effortlessly
                 </p>
               </div>
             </div>
@@ -44,4 +57,3 @@ export function HowItWorksDetailed() {
     </section>
   )
 }
-

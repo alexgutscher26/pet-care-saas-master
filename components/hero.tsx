@@ -4,21 +4,13 @@ import { Badge } from "@/components/ui/badge"
 import { CTAButton } from "@/components/animated-button"
 import { AnimatedList } from "@/components/ui/animated-list"
 import { AvatarCircles } from "@/components/ui/avatar-circles"
-import { AnimatedBeam } from "@/components/ui/animated-beam"
 import { useRef } from "react"
-import { ArrowRightIcon } from "lucide-react"
 import { AnimatedShinyText } from "./ui/animated-shiny-text"
 import { AuroraText } from "./ui/aurora-text"
+import { AmazonIcon, SyncIcon, AnalyticsIcon } from "./icons"
 
 export function Hero() {
   const containerRef = useRef<HTMLDivElement>(null);
-  const div1Ref = useRef<HTMLDivElement>(null);
-  const div2Ref = useRef<HTMLDivElement>(null);
-  const div3Ref = useRef<HTMLDivElement>(null);
-  const div4Ref = useRef<HTMLDivElement>(null);
-  const div5Ref = useRef<HTMLDivElement>(null);
-  const div6Ref = useRef<HTMLDivElement>(null);
-  const div7Ref = useRef<HTMLDivElement>(null);
 
   const avatars = [
     {
@@ -49,24 +41,30 @@ export function Hero() {
 
   const features = [
     <div key="feature-1" className="flex items-start gap-3 rounded-lg border bg-background/60 p-4 backdrop-blur-sm">
-      <span className="mt-1 text-xl">🐾</span>
+      <span className="mt-1 flex h-6 w-6 items-center justify-center">
+        <AmazonIcon size={20} />
+      </span>
       <div>
-        <p className="font-medium">Smart Pet Care Reminders</p>
-        <p className="text-sm text-muted-foreground">Never miss a walk, meal, or playtime with AI-powered scheduling</p>
+        <p className="font-medium">Multi-Platform Integration</p>
+        <p className="text-sm text-muted-foreground">Seamlessly manage listings across Amazon, Etsy, and more</p>
       </div>
     </div>,
     <div key="feature-2" className="flex items-start gap-3 rounded-lg border bg-background/60 p-4 backdrop-blur-sm">
-      <span className="mt-1 text-xl">💊</span>
+      <span className="mt-1 flex h-6 w-6 items-center justify-center">
+        <SyncIcon size={20} />
+      </span>
       <div>
-        <p className="font-medium">Medication Tracking</p>
-        <p className="text-sm text-muted-foreground">Track medications, dosages, and set precise reminder intervals</p>
+        <p className="font-medium">Real-Time Sync</p>
+        <p className="text-sm text-muted-foreground">Keep inventory and pricing in sync across all platforms</p>
       </div>
     </div>,
-    <div key="feature-5" className="flex items-start gap-3 rounded-lg border bg-background/60 p-4 backdrop-blur-sm">
-      <span className="mt-1 text-xl">🏥</span>
+    <div key="feature-3" className="flex items-start gap-3 rounded-lg border bg-background/60 p-4 backdrop-blur-sm">
+      <span className="mt-1 flex h-6 w-6 items-center justify-center">
+        <AnalyticsIcon size={20} />
+      </span>
       <div>
-        <p className="font-medium">Emergency Care Access</p>
-        <p className="text-sm text-muted-foreground">Quick access to nearby vets and emergency care facilities</p>
+        <p className="font-medium">Analytics Dashboard</p>
+        <p className="text-sm text-muted-foreground">Track performance and optimize your listings with data-driven insights</p>
       </div>
     </div>,
   ];
@@ -82,22 +80,22 @@ export function Hero() {
       <div className="flex min-h-screen items-center justify-center">
         <div className="container flex flex-col items-center px-4 md:px-6">
           <AnimatedShinyText className="inline-flex secondary mb-6 items-center justify-center px-4 py-1 transition ease-out hover:text-neutral-600 hover:duration-300 hover:dark:text-neutral-400">
-            <Badge>✨ Introducing Magic UI</Badge>
+            <Badge>✨ Introducing Multi-Platform Listing Management</Badge>
           </AnimatedShinyText>
 
           <h1 className="text-center font-serif text-4xl font-medium tracking-tight sm:text-5xl md:text-6xl lg:text-7xl">
-            Your <AuroraText>Personal</AuroraText>
+            Your <AuroraText>All-in-One</AuroraText>
             <br />
-            Pet Assistant
+            Marketplace Manager
           </h1>
           <p className="mx-auto mt-6 max-w-[600px] text-center text-lg text-muted-foreground">
-            Managing pet care is hard. Sometimes you need
+            Managing multiple marketplace listings is complex.
             <br />
-            an AI companion to help you keep track.
+            Let our platform handle the heavy lifting.
           </p>
 
           <div className="mt-10">
-            <CTAButton>Start Your Journey</CTAButton>
+            <CTAButton>Start Selling Smarter</CTAButton>
           </div>
 
           <div className="mt-8">
@@ -105,10 +103,10 @@ export function Hero() {
           </div>
 
           <p suppressHydrationWarning className="mt-6 text-center text-sm text-muted-foreground">
-            30-day money back guarantee • Cancel anytime
+            14-day free trial • No credit card required
           </p>
         </div>
       </div>
     </section>
-  );
+  )
 }

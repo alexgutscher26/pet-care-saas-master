@@ -1,5 +1,5 @@
 import { cn } from "@/lib/utils";
-import { motion, MotionProps } from "motion/react";
+import { motion, type MotionProps } from "framer-motion";
 import React from "react";
 
 interface AuroraTextProps
@@ -15,7 +15,10 @@ export function AuroraText({
   as: Component = "span",
   ...props
 }: AuroraTextProps) {
-  const MotionComponent = motion.create(Component);
+  const MotionComponent = React.useMemo(
+    () => motion(Component as keyof JSX.IntrinsicElements),
+    [Component]
+  );
 
   return (
     <MotionComponent
