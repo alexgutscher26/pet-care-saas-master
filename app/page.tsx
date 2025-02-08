@@ -9,21 +9,48 @@ import { SimplePricing } from "@/components/simple-pricing"
 import { EnhancedFooter } from "@/components/enhanced-footer"
 import { AnimatedBeamMultipleOutputDemo } from "@/components/process-diagram"
 
+
+// TODO: cHANGE THE METADATA
 export const metadata: Metadata = {
-  title: 'Pet Care - Modern Pet Management Made Easy',
-  description: 'Simplify your pet care routine with our comprehensive pet management platform. Track health records, schedule appointments, and manage multiple pets effortlessly.',
+  title: 'Inventory Management System - Cross-Platform Selling Made Easy',
+  description: 'Streamline your online selling with our multi-platform inventory management system. List, track, and manage your items across eBay, Mercari, Poshmark, and more.',
   openGraph: {
-    title: 'Pet Care - Modern Pet Management Made Easy',
-    description: 'Simplify your pet care routine with our comprehensive pet management platform.',
+    title: 'Inventory Management System - Cross-Platform Selling Made Easy',
+    description: 'Streamline your online selling with our multi-platform inventory management system. List, track, and manage your items across eBay, Mercari, Poshmark, and more.',
+    type: 'website',
+    locale: 'en_US',
+    url: 'https://inventory.example.com',
+    siteName: 'Inventory Management System',
     images: [
       {
-        url: '/og-landing.jpg',
+        url: '/og-image.png',
         width: 1200,
         height: 630,
-        alt: 'Pet Care Landing Page'
+        alt: 'Inventory Management System Dashboard'
       }
     ]
-  }
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Inventory Management System - Cross-Platform Selling Made Easy',
+    description: 'Streamline your online selling with our multi-platform inventory management system. List, track, and manage your items across eBay, Mercari, Poshmark, and more.',
+    images: ['/og-image.png'],
+    creator: '@inventorysystem'
+  },
+  keywords: [
+    'inventory management',
+    'online selling',
+    'ebay',
+    'mercari',
+    'poshmark',
+    'cross-platform selling',
+    'ecommerce',
+    'multi-channel selling'
+  ],
+  authors: [{ name: 'Inventory System Team' }],
+  viewport: 'width=device-width, initial-scale=1',
+  robots: 'index, follow',
+  themeColor: '#1E293B'
 }
 
 export default function Home() {

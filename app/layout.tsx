@@ -7,7 +7,7 @@ const inter = Inter({ subsets: ['latin'] });
 
 export const metadata = {
   title: {
-    template: '%s - Pet Care',
+    template: 'Resellers',
     default: 'Pet Care',
   },
   description: 'Manage your pets with ease',
